@@ -1,4 +1,4 @@
-function Gm = step_three(Gs, N)
+function Gm = slow_step_3(Gs, N)
     Gm = {};
     for i=1:length(Gs)
         g = Gs{i};
@@ -6,7 +6,7 @@ function Gm = step_three(Gs, N)
         if Ne == 1
             B = ones(1,N-Ne);     
         else   
-            B = nmultichoosek(1:Ne, N-Ne);    
+            B = slow_nmultichoosek(1:Ne, N-Ne);    
         end
        
 

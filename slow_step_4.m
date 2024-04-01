@@ -1,14 +1,17 @@
-function [Gn, tf_list] = step_four(Gm, elementList)
+function [Gn, tf_list] = slow_step_4(Gm, elementList)
     % Defining symbol s to represent laplace complex parameter
     syms s
     
-   
-    parameterNums = randperm(100,sum(elementList));
-               
-    bList = perms(parameterNums(1:elementList(1)));          
-    cList = perms(parameterNums(elementList(1)+(1:elementList(2))));         
-    kList = perms(parameterNums(elementList(1)+elementList(2)+(1:elementList(3))));
+    % Defining symbols to represent all the other parameters
+    
+    kList = sym([strcat('k',string(1:elementList(1)))]);
+    cList = sym([strcat('c',string(1:elementList(2)))]);
+    bList = sym([strcat('b',string(1:elementList(3)))]);
+    C = [kList, cList, bList];
 
+    kList = perms(kList);
+    cList = perms(cList);
+    bList = perms(bList);
 
     % N is number of elements / edges
     N = sum(elementList);
@@ -16,12 +19,9 @@ function [Gn, tf_list] = step_four(Gm, elementList)
     % Gn is the list of all accepted network configurations
     % TFs is the list of all of their respective transfer functions
     Gn = {};
-    TFs = zeros(0,20);
+
     tf_list = sym([]);
         
-    numPaths = [];
-    numNodes = [];
-    numParrallel = [];
 
     % P represents a list of all possible ways of assigning element types
     % to the edges of the graph
@@ -118,47 +118,25 @@ function [Gn, tf_list] = step_four(Gm, elementList)
             
             if RE == 0
                
-               TF = findTF(g);
-               
-
-               C = symvar(TF);
-               C = C(C~=s);
-
-               
-               % Storing details about current graph
-               thisGraphNumPaths = length(edgePaths);
-               thisGraphNumNodes = height(g.Nodes);
-               thisGraphNumParrallel = height(A(:,[1 2]))-height(unique(A(:,[1 2]), 'rows'));
-
-               %% Indexes valid graphs to compare
-               validNumPaths = numPaths == thisGraphNumPaths;
-               validNumNodes = numNodes == thisGraphNumNodes;
-               validNumParrallel = numParrallel == thisGraphNumParrallel;
-                
-              
-                
-               validGraphs = validNumNodes & validNumPaths & validNumParrallel;
-
-               TFsValid = TFs(validGraphs,:);
-                
-
-               [output, TFCoeffs] = compareTFMatrix(TFsValid, TF, C, kList, cList, bList);
+               TF = slow_findTF(g);
+                  
+               for TFIndex = 1:length(tf_list)
+                    if slow_compareTF(TF, tf_list(TFIndex), C, kList, cList, bList) == 1
+                        RE=1;
+                        break
+                    end
+               end
+               %[output, TFCoeffs] = slow_compareTFMatrix(TFsValid, TF, C, kList, cList, bList);
                     
                 
-               if RE == 0 & output ==0
+               if RE == 0
                     
                     Gn{end+1} = g;
+                    disp(length(Gn))
 
-                    TFs(end+1,:) = TFCoeffs;
                     tf_list(end+1) = TF;
-
-                    numPaths = [numPaths; thisGraphNumPaths];
-                    numNodes = [numNodes; thisGraphNumNodes];
-                    numParrallel = [numParrallel; thisGraphNumParrallel];
-
                end
             end 
         end
     end
-
 end

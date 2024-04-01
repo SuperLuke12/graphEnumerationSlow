@@ -1,4 +1,4 @@
-function Gs = step_two(G)
+function Gs = slow_step_2(G)
     Gs = {};
 
     for i = 1:length(G)

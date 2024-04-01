@@ -1,4 +1,4 @@
-function H = findTF(g)
+function H = slow_findTF(g)
     syms s
     
     N = height(g.Edges);

@@ -1,4 +1,4 @@
-function J3 = calcJ3(Y, params)
+function J3 = slow_calcJ3(Y, params)
 
     
     kt = 150000;

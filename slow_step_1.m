@@ -1,7 +1,6 @@
-function G = step_one(Ne)
+function G = slow_step_1(Ne, G)
 
-    G = {};
-    
+
     for Nv = ceil(1/2+sqrt(1/4+2.*Ne)):Ne+1
         
         % Creates Complete graph with Nv vertices

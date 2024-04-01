@@ -1,4 +1,4 @@
-function [RE, TFCoeffs] = compareTFMatrix(TFMatrix, TF, C, bList, cList, kList)
+function [RE, TFCoeffs] = slow_compareTFMatrix(TF, TFC, C, bList, cList, kList)
 
     RE = 0;
 
@@ -12,12 +12,6 @@ function [RE, TFCoeffs] = compareTFMatrix(TFMatrix, TF, C, bList, cList, kList)
                 cd = zeros(1,10);
 
                 [n, d] = numden(subs(TF, C, [bList(i,:), cList(x,:), kList(y,:)]));
-
-
-                cn(1:length(coeffs(n))) = coeffs(n);
-                cd(1:length(coeffs(d))) = coeffs(d);
-                
-                TFCoeffs = [cn, cd];
 
                 
                 if any(ismember(TFMatrix, TFCoeffs, 'rows') == 1)

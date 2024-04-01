@@ -1,4 +1,4 @@
-function combs = nmultichoosek(values, k)
+function combs = slow_nmultichoosek(values, k)
 %// Return number of multisubsets or actual multisubsets.
 if numel(values)==1
     n = values;

@@ -1,4 +1,4 @@
-function step_five(tf_list, elementList)
+function slow_step_5(tf_list, elementList)
 
     results = [1:length(tf_list);zeros(sum(elementList)+1,length(tf_list))].';
     options = optimoptions('fmincon','Display','off');
@@ -10,7 +10,7 @@ function step_five(tf_list, elementList)
 
     for graphIndex = 1:length(tf_list)
         
-        fun = @(x) calcJ3(tf_list(graphIndex), x);
+        fun = @(x) slow_calcJ3(tf_list(graphIndex), x);
 
         problem = createOptimProblem('fmincon', 'objective', fun,'x0',x0,'lb', lb,'ub', ub,'options',options);
         ms = MultiStart;
