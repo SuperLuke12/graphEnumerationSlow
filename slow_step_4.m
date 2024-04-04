@@ -132,7 +132,7 @@ function [Gn, tf_list] = slow_step_4(Gm, elementList)
                if RE == 0
                     
                     Gn{end+1} = g;
-                    disp(length(Gn))
+                    
 
                     tf_list(end+1) = TF;
                end
